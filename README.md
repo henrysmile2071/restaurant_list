@@ -23,28 +23,28 @@ Displays a list of restaurant with a simple search bar
    npm install
    ```
 
-4. ：
+4. Then：
 
    ```bash
    npm run start
    ```
 
-5. 若看見此行訊息則代表順利運行，打開瀏覽器進入到以下網址
+5. If the code is running successfully(see message below), open your browser and go to http://localhost:3000
 
    ```bash
    Listening on http://localhost:3000
    ```
 
-6. 若欲暫停使用
+6. To stop the program:
 
    ```bash
    ctrl + c
    ```
 
-## 開發工具
+## Tools
 
-- Node.js 10.15.0
-- Express 4.17.1
-- Express-Handlebars 5.3.3
-- Bootstrap 4.3.1
-- Font-awesome 5.8.1
+- Node.js 14.16.0
+- Express 4.16.4
+- Express-Handlebars 3.0.0
+- Bootstrap 5.2.0
+- Font-awesome 6.1.2
