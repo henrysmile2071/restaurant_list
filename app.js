@@ -1,7 +1,45 @@
-//Require
+//app.js
 
-//Settings
+//Specs:
+//1. Display restaurants in index page
+//2. Click to see details in show page
+//3. Search and filter with:
+//3-1 name
+//3-2 type
 
-//Req and Res Handling
+//Require and Settings:
+//packages and constants
+const express = require('express')
+const app = express()
+const port = 3000
+const exphbs = require('express-handlebars')
+const restaurantList = require('./restaurant.json')
+//template engine
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.set('view engine', 'handlebars')
+//static files
+app.use(express.static('public'))
+
+//Routes
+//index('/')
+app.get('/', (req, res) => {
+  res.render('index', { restaurants: restaurantList.results })
+})
+//search('/search')
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword.trim().toLowerCase()
+  const restaurants = restaurantList.results.filter(restaurant => {
+   return restaurant.name.toLowerCase().includes(keyword) || restaurant.category.includes(keyword)
+  })
+  res.render('index', { restaurants: restaurants, keyword: keyword })
+})
+//show('/restaurants/:restaurant_id')
+app.get('/restaurants/:restaurant_id', (req, res) => {
+  const restaurant = restaurantList.results.find(restaurant => restaurant.id == req.params.restaurant_id)
+  res.render('show', { restaurant: restaurant })
+})
 
 //Start server
+app.listen(port, () => {
+  console.log(`Express is listening on localhost:${port}`)
+})
