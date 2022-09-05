@@ -1,12 +1,5 @@
 //app.js
 
-//Specs:
-//1. Display restaurants in index page
-//2. Click to see details in show page
-//3. Search and filter with:
-//3-1 name
-//3-2 type
-
 //Require and Settings:
 //packages and constants
 const express = require('express')
