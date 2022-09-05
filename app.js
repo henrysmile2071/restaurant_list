@@ -26,6 +26,7 @@ db.on('error', () => {
 db.once('open', () => {
   console.log('mongodb connected!')
 })
+
 //Routes
 
 //index('/')
