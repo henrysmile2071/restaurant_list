@@ -8,13 +8,18 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGODB_URI2, { useNewUrlParser: true, useUnifiedTopology: true })
 const port = 3000
 const exphbs = require('express-handlebars')
-const restaurantList = require('./restaurant.json')
+const restaurantList = require('./models/restaurant.json')
+const bodyParser = require('body-parser')
+const Restaurant = require('./models/restaurant')
 
 //template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 //static files
 app.use(express.static('public'))
+
+//body parser
+app.use(bodyParser.urlencoded({ extended: true}))
 
 // connect to database
 const db = mongoose.connection
@@ -28,6 +33,18 @@ db.once('open', () => {
 })
 
 //Routes
+//to add restaurant page('/restaurant/new')
+app.get('/restaurant/new', (req, res) => {
+  res.render('new')
+})
+
+//post new restaurant ('/restaurants')
+app.post('/restaurants', (req, res) => {
+  const restaurantData = req.body
+  return Restaurant.create(restaurantData)
+  .then(() => res.redirect('/'))
+  .catch(error => console.log(error))
+})
 
 //index('/')
 app.get('/', (req, res) => {
