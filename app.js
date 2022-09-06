@@ -46,9 +46,12 @@ app.post('/restaurants', (req, res) => {
   .catch(error => console.log(error))
 })
 
-//index('/')
+//show all resatuarants index('/')
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurantList.results })
+  Restaurant.find()
+  .lean()
+  .then(restaurants => res.render('index', {restaurants}))
+  .catch(error => console.log(error))
 })
 //search('/search')
 app.get('/search', (req, res) => {
