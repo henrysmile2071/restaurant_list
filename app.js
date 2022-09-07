@@ -19,7 +19,7 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 //body parser
-app.use(bodyParser.urlencoded({ extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // connect to database
 const db = mongoose.connection
@@ -42,16 +42,16 @@ app.get('/restaurant/new', (req, res) => {
 app.post('/restaurants', (req, res) => {
   const restaurantData = req.body
   return Restaurant.create(restaurantData)
-  .then(() => res.redirect('/'))
-  .catch(error => console.log(error))
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 //show all resatuarants index('/')
 app.get('/', (req, res) => {
   Restaurant.find()
-  .lean()
-  .then(restaurants => res.render('index', {restaurants}))
-  .catch(error => console.log(error))
+    .lean()
+    .then(restaurants => res.render('index', { restaurants }))
+    .catch(error => console.log(error))
 })
 //search('/search')
 app.get('/search', (req, res) => {
@@ -61,10 +61,13 @@ app.get('/search', (req, res) => {
   })
   res.render('index', { restaurants, keyword })
 })
-//show('/restaurants/:restaurant_id')
+//show details('/restaurants/:restaurant_id')
 app.get('/restaurants/:restaurant_id', (req, res) => {
-  const restaurant = restaurantList.results.find(restaurant => restaurant.id == req.params.restaurant_id)
-  res.render('show', { restaurant })
+  return Restaurant.findById(req.params.restaurant_id)
+    .lean()
+    .then((restaurants) => 
+        res.render('show', { restaurants }))
+    .catch(error => console.log(error))
 })
 
 //Start server
