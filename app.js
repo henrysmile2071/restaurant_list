@@ -80,7 +80,7 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-//put edited restaurant ('/restaurants/:restaurant_id)
+//post edited restaurant ('/restaurants/:restaurant_id)
 app.post('/restaurants/:restaurant_id/edit', (req, res) => {
   const id = req.params.restaurant_id
   return Restaurant.findById(id)
@@ -99,6 +99,16 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
+
+//delete restaurant
+app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+  const id = req.params.restaurant_id
+  return Restaurant.findById(id)
+  .then(restaurant => restaurant.remove())
+  .then(() => res.redirect('/'))
+  .catch(error => console.log(error))
+})
+
 //Start server
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)
