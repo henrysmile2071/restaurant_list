@@ -57,10 +57,14 @@ app.get('/', (req, res) => {
 //search('/search')
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
-  const restaurants = restaurantList.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword) || restaurant.category.includes(keyword)
-  })
-  res.render('index', { restaurants, keyword })
+  return Restaurant.find()
+    .lean()
+    .then(restaurants => {
+      const filterRestaurants = restaurants.filter(restaurants => {
+      return restaurants.name.toLowerCase().includes(keyword) || restaurants.category.includes(keyword)
+    })
+    res.render('index', { restaurants: filterRestaurants, keyword })})
+    .catch(error => console.log(error))
 })
 
 //show details('/restaurants/:restaurant_id')
@@ -83,19 +87,7 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
 //post edited restaurant ('/restaurants/:restaurant_id)
 app.post('/restaurants/:restaurant_id/edit', (req, res) => {
   const id = req.params.restaurant_id
-  return Restaurant.findById(id)
-    .then(restaurant => {
-      restaurant.name = req.body.name
-      restaurant.name_en = req.body.name_en
-      restaurant.category = req.body.category
-      restaurant.image = req.body.image
-      restaurant.location = req.body.location
-      restaurant.phone = req.body.phone
-      restaurant.google_map = req.body.google_map
-      restaurant.rating = req.body.rating
-      restaurant.description = req.body.description
-      return restaurant.save()
-    })
+  return Restaurant.findByIdAndUpdate(id, req.body)
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
@@ -104,9 +96,9 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
 app.post('/restaurants/:restaurant_id/delete', (req, res) => {
   const id = req.params.restaurant_id
   return Restaurant.findById(id)
-  .then(restaurant => restaurant.remove())
-  .then(() => res.redirect('/'))
-  .catch(error => console.log(error))
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 //Start server
