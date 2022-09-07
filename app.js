@@ -53,6 +53,7 @@ app.get('/', (req, res) => {
     .then(restaurants => res.render('index', { restaurants }))
     .catch(error => console.log(error))
 })
+
 //search('/search')
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
@@ -61,15 +62,43 @@ app.get('/search', (req, res) => {
   })
   res.render('index', { restaurants, keyword })
 })
+
 //show details('/restaurants/:restaurant_id')
 app.get('/restaurants/:restaurant_id', (req, res) => {
   return Restaurant.findById(req.params.restaurant_id)
     .lean()
-    .then((restaurants) => 
-        res.render('show', { restaurants }))
+    .then((restaurants) =>
+      res.render('show', { restaurants }))
     .catch(error => console.log(error))
 })
 
+//to edit restaurant page('/restaurants/:restaurant_id/edit')
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  return Restaurant.findById(req.params.restaurant_id)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(error => console.log(error))
+})
+
+//put edited restaurant ('/restaurants/:restaurant_id)
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  return Restaurant.findById(id)
+    .then(restaurant => {
+      restaurant.name = req.body.name
+      restaurant.name_en = req.body.name_en
+      restaurant.category = req.body.category
+      restaurant.image = req.body.image
+      restaurant.location = req.body.location
+      restaurant.phone = req.body.phone
+      restaurant.google_map = req.body.google_map
+      restaurant.rating = req.body.rating
+      restaurant.description = req.body.description
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(error => console.log(error))
+})
 //Start server
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)
