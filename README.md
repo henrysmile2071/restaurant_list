@@ -1,10 +1,10 @@
 # My Restaurant List
 
-![Index page about Restaurant List](./public/image/snapshot.png)
+![Index page about Restaurant List](./public/image/snapshot2.png)
 
 ## About
 
-Displays a list of restaurant with a simple search bar
+Displays a list of restaurants with a simple search bar
 
 ### Functions
 
@@ -12,6 +12,9 @@ Displays a list of restaurant with a simple search bar
 - Display restaurant details when clicked
 - Connect to Google maps when icon is clicked
 - Search restaurants via name or category
+- Add new restaurant to list
+- Edit restaurant details
+- Delete selected restaurant
 
 ## Installation
 
@@ -33,6 +36,7 @@ Displays a list of restaurant with a simple search bar
 
    ```bash
    Listening on http://localhost:3000
+   mongodb connected!
    ```
 
 6. To stop the program:
@@ -48,3 +52,5 @@ Displays a list of restaurant with a simple search bar
 - Express-Handlebars 3.0.0
 - Bootstrap 5.2.0
 - Font-awesome 6.1.2
+- mongoDB 4.9.1
+- mongoose 5.13.15
