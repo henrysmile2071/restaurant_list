@@ -15,10 +15,6 @@ db.once('open', () => {
   console.log('mongodb connected!')
   restaurants.forEach(entry => {
     Restaurant.create(entry)
-      .then(() => {
-        console.log('done!')
-      })
-      .catch(err => console.log(err))
-      .finally(() => db.close())
   })
+  console.log('done!')
 })

@@ -8,7 +8,6 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGODB_URI2, { useNewUrlParser: true, useUnifiedTopology: true })
 const port = 3000
 const exphbs = require('express-handlebars')
-const restaurantList = require('./models/restaurant.json')
 const bodyParser = require('body-parser')
 const Restaurant = require('./models/restaurant')
 
