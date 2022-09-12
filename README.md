@@ -26,20 +26,31 @@ Displays a list of restaurants with a simple search bar
    npm install
    ```
 
-4. Then：
+4. Set MongoDB URI at local evironmental constant:
+
+   ```bash
+   export MONGODB_URI2="mongodb+srv://<your_account>:<your_password>@cluster0.j9qlz5q.mongodb.net/restaurant-list?retryWrites=true&w=majority"
+   ```
+5. Run seeder: 
+
+   ```bash
+   npm run seed
+   ```
+
+6. Then：
 
    ```bash
    npm run start
    ```
 
-5. If the code is running successfully(see message below), open your browser and go to http://localhost:3000
+7. If the code is running successfully(see message below), open your browser and go to http://localhost:3000
 
    ```bash
    Listening on http://localhost:3000
    mongodb connected!
    ```
 
-6. To stop the program:
+8. To stop the program:
 
    ```bash
    ctrl + c
