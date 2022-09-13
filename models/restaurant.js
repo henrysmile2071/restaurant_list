@@ -29,4 +29,5 @@ const restaurantSchema = new Schema({
     type: String
   }
 })
+restaurantSchema.index({ name: 'text', name_en: 'text', category: 'text' })//add text index to Schema for full text search
 module.exports = mongoose.model('Restaurant', restaurantSchema)

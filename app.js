@@ -5,7 +5,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGODB_URI2, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI2, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 const port = 3000
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
@@ -55,14 +55,14 @@ app.get('/', (req, res) => {
 
 //search('/search')
 app.get('/search', (req, res) => {
-  const keyword = req.query.keyword.trim().toLowerCase()
-  return Restaurant.find()
+  const keyword = req.query.keyword.trim()
+  const searchQuery = { $text: { $search: keyword } } //https://stackoverflow.com/questions/28775051/best-way-to-perform-a-full-text-search-in-mongodb-and-mongoose
+  return Restaurant.find(searchQuery)
     .lean()
     .then(restaurants => {
-      const filterRestaurants = restaurants.filter(restaurants => {
-      return restaurants.name.toLowerCase().includes(keyword) || restaurants.category.includes(keyword)
+      const resultsCount = Object.keys(restaurants).length
+      res.render('index', { restaurants, keyword, resultsCount })
     })
-    res.render('index', { restaurants: filterRestaurants, keyword })})
     .catch(error => console.log(error))
 })
 
