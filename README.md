@@ -1,6 +1,6 @@
 # My Restaurant List
 
-![Index page about Restaurant List](./public/image/snapshot2.png)
+![Index page about Restaurant List](./public/image/snapshot3.png)
 
 ## About
 
@@ -11,7 +11,7 @@ Displays a list of restaurants with a simple search bar
 - Display all restaurants
 - Display restaurant details when clicked
 - Connect to Google maps when icon is clicked
-- Search restaurants via name or category
+- Search restaurants via name or category and sort alphabetically/by category
 - Add new restaurant to list
 - Edit restaurant details
 - Delete selected restaurant
@@ -65,3 +65,5 @@ Displays a list of restaurants with a simple search bar
 - Font-awesome 6.1.2
 - mongoDB 4.9.1
 - mongoose 5.13.15
+- method-override 3.0.0
+
