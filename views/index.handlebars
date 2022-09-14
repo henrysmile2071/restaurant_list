@@ -12,11 +12,12 @@
                 class="fas fa-search"></i></button>
         </div>
         <div class="input-group"></div>
-        <select name="sortOptions" class="form-select" aria-label="Default select example">
-          <option selected value="aToz">A -> Z</option>
-          <option value="zToa">Z -> A</option>
-          <option value="category">Category</option>
-          <option value="region">Region</option>
+        <select name="sortMethod" class="form-select" aria-label="sortMethod">
+          {{#select selected}}
+          {{#each sortMethods}}
+          <option value="{{this.text}}">{{this.text}}</option>
+          {{/each}}
+          {{/select}}
         </select>
       </div>
     </form>

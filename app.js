@@ -8,12 +8,17 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGODB_URI2, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 const port = 3000
 const exphbs = require('express-handlebars')
+const hbsHelpers = exphbs.create({
+  helpers: require('./utility/handlebarsHelper').helpers,
+  defaultLayout: 'main',
+})
 const bodyParser = require('body-parser')
 const Restaurant = require('./models/restaurant')
-
+const sortMethods = require('./utility/sortMethod')
 //template engine
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.engine('handlebars', hbsHelpers.engine)
 app.set('view engine', 'handlebars')
+
 //static files
 app.use(express.static('public'))
 
@@ -45,23 +50,29 @@ app.post('/restaurants', (req, res) => {
     .catch(error => console.log(error))
 })
 
-//show all resatuarants index('/')
+//show all restaurants index('/')
 app.get('/', (req, res) => {
   Restaurant.find()
     .lean()
-    .then(restaurants => res.render('index', { restaurants }))
+    .sort({ name: 'desc' })
+    .then(restaurants => {
+      res.render('index', { restaurants, sortMethods })
+    })
     .catch(error => console.log(error))
 })
 
 //search('/search')
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim()
+  const selected = req.query.sortMethod
+  const sortBy = sortMethods.find(x => x.text === selected).method
   const searchQuery = { $text: { $search: keyword } } //https://stackoverflow.com/questions/28775051/best-way-to-perform-a-full-text-search-in-mongodb-and-mongoose
   return Restaurant.find(searchQuery)
     .lean()
+    .sort(sortBy)
     .then(restaurants => {
       const resultsCount = Object.keys(restaurants).length
-      res.render('index', { restaurants, keyword, resultsCount })
+      res.render('index', { restaurants, keyword, resultsCount, sortMethods, selected })
     })
     .catch(error => console.log(error))
 })
