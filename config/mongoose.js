@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGODB_URI2, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.set('useFindAndModify', false)
 // connect to database
 const db = mongoose.connection
 // Error

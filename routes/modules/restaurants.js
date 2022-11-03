@@ -37,7 +37,7 @@ router.get('/:_id/edit', (req, res) => {
 router.put('/:_id', (req, res) => {
   const id = req.params._id
   return Restaurant.findByIdAndUpdate(id, req.body)
-    .then(() => res.redirect(`/${id}`))
+    .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
 
