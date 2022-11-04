@@ -3,7 +3,6 @@
 //packages and constants
 const express = require('express')
 const app = express()
-const port = 3000
 const methodOverride = require('method-override')
 const exphbs = require('express-handlebars')
 const hbsHelpers = exphbs.create({
@@ -16,6 +15,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 require('./config/mongoose')
+const session = require('express-session')
+const usePassport = require('./config/passport')
 
 //Use middleware
 app.engine('handlebars', hbsHelpers.engine)
@@ -23,9 +24,16 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}))
+usePassport(app)
+
 app.use(routes)
 
 //Start server
-app.listen(port, () => {
-  console.log(`Express is listening on localhost:${port}`)
+app.listen(process.env.PORT, () => {
+  console.log(`Express is listening on localhost:${process.env.PORT}`)
 })
