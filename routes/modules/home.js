@@ -5,7 +5,8 @@ const sortMethods = require('../../utility/sortMethod')
 
 //homepage route
 router.get('/', (req, res) => {
-  Restaurant.find()
+  const userId = req.user._id
+  Restaurant.find({userId})
     .collation({ locale: "en" })
     .lean()
     .sort({ name: 'desc' })

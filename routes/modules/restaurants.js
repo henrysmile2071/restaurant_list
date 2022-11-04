@@ -11,6 +11,8 @@ router.get('/new', (req, res) => {
 //post new restaurant ('/')
 router.post('/', (req, res) => {
   const restaurantData = req.body
+  const userId = req.user._id
+  restaurantData.push(userId)
   return Restaurant.create(restaurantData)
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
@@ -18,7 +20,9 @@ router.post('/', (req, res) => {
 
 //show details('/:_id')
 router.get('/:_id', (req, res) => {
-  return Restaurant.findById(req.params._id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Restaurant.findOne({ _id, userId})
     .lean()
     .then((restaurants) =>
       res.render('show', { restaurants }))
@@ -27,7 +31,9 @@ router.get('/:_id', (req, res) => {
 
 //to edit restaurant page('/:_id/edit')
 router.get('/:_id/edit', (req, res) => {
-  return Restaurant.findById(req.params._id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('edit', { restaurant }))
     .catch(error => console.log(error))
@@ -35,16 +41,19 @@ router.get('/:_id/edit', (req, res) => {
 
 //post edited restaurant ('/:_id)
 router.put('/:_id', (req, res) => {
-  const id = req.params._id
-  return Restaurant.findByIdAndUpdate(id, req.body)
+  const userId = req.user._id
+  const _id = req.params.id
+  req.body.push(userId)
+  return Restaurant.findByIdAndUpdate(_id, req.body)
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
 
 //delete restaurant
-router.delete('/:_id/delete', (req, res) => {
-  const id = req.params.restaurant_id
-  return Restaurant.findById(id)
+router.delete('/:_id', (req, res) => {
+  const _id = req.params.restaurant_id
+  const userId = req.user._id
+  return Restaurant.findOne({ _id, userId})
     .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))

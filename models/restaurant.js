@@ -28,12 +28,12 @@ const restaurantSchema = new Schema({
   description: {
     type: String
   },
-  // userId: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User',
-  //   index: true,
-  //   required: true
-  // }
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true
+  }
 })
 
 restaurantSchema.index({ name: 'text', name_en: 'text', category: 'text' })//add text index to Schema for full text search
