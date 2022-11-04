@@ -1,7 +1,6 @@
 const db = require('../../config/mongoose')
 const Restaurant = require('../restaurant') // load model
-const restaurantList = require('../restaurant.json')
-const restaurants = restaurantList.results
+const restaurants = require('../restaurant.json').results
 
 //connect to database
 db.once('open', () => {
