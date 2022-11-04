@@ -1,7 +1,6 @@
 //app.js
 //Require and Settings:
 //packages and constants
-require('./config/mongoose')
 const express = require('express')
 const app = express()
 const port = 3000
@@ -13,6 +12,10 @@ const hbsHelpers = exphbs.create({
 })
 const bodyParser = require('body-parser')
 const routes = require('./routes')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+require('./config/mongoose')
 
 //Use middleware
 app.engine('handlebars', hbsHelpers.engine)
