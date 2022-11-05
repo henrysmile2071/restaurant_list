@@ -4,7 +4,7 @@
 
 ## About
 
-Displays a list of restaurants with a simple search bar
+Add your account and start collecting your personal list of restaurants with a simple search bar.
 
 ### Functions
 
@@ -15,6 +15,11 @@ Displays a list of restaurants with a simple search bar
 - Add new restaurant to list
 - Edit restaurant details
 - Delete selected restaurant
+- Register as a user
+- Login to access to your personal list
+- Facebook login
+- Password hash via bcrypt
+- User Authentication (redirect users if not logged in)
 
 ## Installation
 
@@ -66,4 +71,10 @@ Displays a list of restaurants with a simple search bar
 - mongoDB 4.9.1
 - mongoose 5.13.15
 - method-override 3.0.0
-
+- passport 0.4.1
+- passport-facebook 3.0.0
+- passport-local 1.0.0
+- express-session 1.17.1
+- bcryptjs 2.4.3
+- connect-flash 0.1.1
+- dotenv 16.0.3
