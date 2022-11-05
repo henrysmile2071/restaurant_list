@@ -13,7 +13,8 @@ router.get('/login', (req, res) => {
 //Post Login
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/users/login'
+  failureRedirect: '/users/login',
+  failureMessage: true
 }))
 
 //Register Page
@@ -25,12 +26,30 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) => {
   //Get form info
   const { name, email, password, confirmPassword } = req.body
+  const errors = []
+  if (!name || !email || !password || !confirmPassword) {
+    errors.push({ message: 'Please fill in all the fields.' })
+  }
+  if (password !== confirmPassword) {
+    errors.push({ message: 'Please make sure the passwords are the same！' })
+  }
+  if (errors.length) {
+    return res.render('register', {
+      errors,
+      name,
+      email,
+      password,
+      confirmPassword
+    })
+  }
   //Check if user is already registered
   User.findOne({ email })
     .then(user => {
       //if the same email is found, show message and stay at register page 
       if (user) {
+        errors.push({ message: 'This email has already been registered.' })
         return res.render('register', {
+          errors,
           name,
           email,
           password,
@@ -55,6 +74,7 @@ router.post('/register', (req, res) => {
 //Logout
 router.get('/logout', (req, res) => {
   req.logout()
+  req.flash('success_msg', 'You have successfully logged out.')
   res.redirect('/users/login')
 })
 
