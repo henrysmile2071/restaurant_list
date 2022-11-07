@@ -21,25 +21,25 @@ const SEED_USERS = [
 
 //connect to database
 db.once('open', () => {
-  SEED_USERS.forEach(user => {
-    bcrypt
-      .genSalt(10)
-      .then(salt => bcrypt.hash(user.password, salt))
-      .then(hash => User.create({
+  Promise.all(
+    SEED_USERS.map((user) =>
+      User.create({
         name: user.name,
         email: user.email,
-        password: hash
-      }))
-      .then(user => {
-        const userId = user._id
-        for (let i = 0; i < 3; i++) {
-          restaurants[0].userId = userId
-          Restaurant.create(restaurants[0])
-            .then(restaurants.shift())
-            .catch(err => console.log(err))
-        }
+        password: bcrypt.hashSync(user.password, 10)//refactor hash generation using hashSync
       })
-      .catch(err => console.log(err))
-  })
-  console.log('done!')
+        .then(user => {
+          const userRestaurants = []
+          for (let i = 0; i < 3; i++) {
+            restaurants[0].userId = user._id
+            userRestaurants.push(restaurants[0])
+            restaurants.shift()
+          }
+          return Restaurant.create(userRestaurants)
+        })
+    ))
+    .then(() => {
+      console.log('done!')
+      process.exit()
+    })
 })
